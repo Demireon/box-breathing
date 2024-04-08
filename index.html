@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Box Breathing</title>
+    <style>
+      /* styles for information icon and modal */
+      #info-icon {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        font-size: 24px;
+        color: white;
+        cursor: pointer;
+        z-index: 2;
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+      }
+
+      .modal-content {
+        background-color: rgba(28, 33, 36, 0.95);
+        margin: auto;
+        padding: 30px;
+        border-radius: 10px;
+        width: 50%;
+        transition: all 0.3s ease;
+      }
+
+      .modal-content p {
+        font-family: "Arial", sans-serif;
+        line-height: 1.6;
+        color: #d9d9d9; /* Light grey for text to contrast the dark modal background */
+        /* ...other styles... */
+      }
+
+      .modal-content h2 {
+        font-family: "Arial", sans-serif;
+        line-height: 1.6;
+        color: #d9d9d9; /* Light grey for text to contrast the dark modal background */
+        /* ...other styles... */
+      }
+
+      .close {
+        color: #d9d9d9;
+        float: right;
+        font-size: 24px;
+        cursor: pointer;
+      }
+
+      /* Transition effects for opening and closing the modal */
+      .modal.show {
+        display: flex;
+        opacity: 1;
+      }
+
+      .modal-content.show {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    </style>
+    <style>
+      body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        background-color: #000;
+      }
+      #instruction {
+        color: white;
+        font-size: 24px;
+        margin-bottom: 120px; /* Adjust the space above the ball */
+        text-align: center;
+      }
+      #breathing-ball {
+        width: 150px;
+        height: 150px;
+        background-color: #0000ff;
+        border-radius: 50%;
+        animation: breathe 16s infinite;
+      }
+      @keyframes breathe {
+        0%,
+        25% {
+          /* 0-4 seconds: Inhale (expanding) */
+          transform: scale(1);
+        }
+        25%,
+        50% {
+          /* 4-8 seconds: Hold (expanded) */
+          transform: scale(2);
+        }
+        50%,
+        75% {
+          /* 8-12 seconds: Exhale (contracting) */
+          transform: scale(2);
+        }
+        75%,
+        100% {
+          /* 12-16 seconds: Hold (contracted) */
+          transform: scale(1);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="instruction">Inhale</div>
+    <div id="breathing-ball"></div>
+
+    <div id="info-icon">&#9432;</div>
+    <!-- Unicode information symbol -->
+
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Box Breathing</h2>
+        <p>
+          Through the ebb and flow of breath, find the rhythm of calm within.
+          This simple practice of inhale, hold, exhale, hold - mirrored by the
+          pulse of a solitary blue orb - is your anchor in the tumult of daily
+          life. It is a tool not just for moments of stress, but a ritual to
+          weave into the fabric of your day, inviting peace and clarity with
+          each breath. Let it be a reminder that the power to center and renew
+          lies within, a breath away. Embrace this practice often, at day's
+          start or any moment peace feels distant, and discover the stillness
+          that guides you back to your true north.
+        </p>
+      </div>
+    </div>
+
+    <script>
+      const instructionDiv = document.getElementById("instruction");
+      let phase = "inhale";
+
+      function updateInstruction() {
+        switch (phase) {
+          case "inhale":
+            instructionDiv.textContent = "Inhale";
+            break;
+          case "hold-in":
+            instructionDiv.textContent = "Hold";
+            break;
+          case "exhale":
+            instructionDiv.textContent = "Exhale";
+            break;
+          case "hold-out":
+            instructionDiv.textContent = "Hold";
+            break;
+        }
+      }
+
+      setInterval(() => {
+        // Cycle through the breathing phases
+        if (phase === "inhale") {
+          phase = "hold-in";
+        } else if (phase === "hold-in") {
+          phase = "exhale";
+        } else if (phase === "exhale") {
+          phase = "hold-out";
+        } else if (phase === "hold-out") {
+          phase = "inhale";
+        }
+        updateInstruction();
+      }, 4000); // Update every 4 seconds to match the animation timing
+    </script>
+    <script>
+      // Existing JavaScript for breathing instructions
+
+      var modal = document.getElementById("myModal");
+      var infoIcon = document.getElementById("info-icon");
+      var span = document.getElementsByClassName("close")[0];
+
+      infoIcon.onclick = function () {
+        modal.classList.add("show");
+        modal.style.display = "flex"; // For immediate effect
+      };
+
+      span.onclick = function () {
+        modal.classList.remove("show");
+        setTimeout(() => {
+          modal.style.display = "none";
+        }, 300); // Delay to allow transition
+      };
+
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          modal.classList.remove("show");
+          setTimeout(() => {
+            modal.style.display = "none";
+          }, 300);
+        }
+      };
+    </script>
+  </body>
+</html>
